@@ -1,19 +1,13 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 import { WebhookRequestBody } from "@line/bot-sdk";
-import { Middleware } from "@line/bot-sdk/lib/middleware";
 import * as line from "@/lib/line";
+import { runMiddleware } from "@/lib/next";
 
 export const config = {
   api: {
     bodyParser: false, // Necessary for line.middleware
   },
 };
-
-async function runMiddleware(req: NextApiRequest, res: NextApiResponse, fn: Middleware) {
-  return new Promise((resolve, reject) => {
-    fn(req, res, (result) => (result instanceof Error ? reject(result) : resolve(result)));
-  });
-}
 
 const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
